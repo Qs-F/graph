@@ -34,3 +34,22 @@ func (node *Node[T]) DFS(f func(value T) bool) {
 	}
 	walk(node)
 }
+
+func (node *Node[T]) BFS(f func(value T) bool) {
+	q := NewQueue[*Node[T]](node)
+	visited := map[*Node[T]]struct{}{node: struct{}{}}
+
+	for q.Len() != 0 {
+		v := q.Pop()
+		if !f(v.Value) {
+			return
+		}
+		for _, child := range v.Children {
+			if _, ok := visited[child]; ok {
+				continue
+			}
+			visited[child] = struct{}{}
+			q.Push(child)
+		}
+	}
+}
