@@ -16,8 +16,12 @@ func (node *Node[T]) Add(children ...*Node[T]) {
 }
 
 func (node *Node[T]) DFS(f func(value T) bool) {
+	visited := map[*Node[T]]struct{}{}
 	var walk func(node *Node[T])
 	walk = func(node *Node[T]) {
+		if _, ok := visited[node]; ok {
+			return
+		}
 		if !f(node.Value) {
 			return
 		}
